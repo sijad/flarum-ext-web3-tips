@@ -1,0 +1,18 @@
+tokenjenny-web3-tips:
+  forum:
+    post:
+      tip_link: "Tip ({count})"
+    tip_post:
+      title: Tip Post
+      amount: Amount
+      submit_button: Tip
+      connect_wallet: In order to tip you need to connect your wallet in settings.
+  admin:
+    settings:
+      token: Token Settings
+      token_address: Address
+      token_decimals: Decimals
+      network: Network Settings
+      chain_id: Chain ID
+      rpc_url: RPC URL
+
