@@ -6580,7 +6580,7 @@ flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default.a.initializers.add('tokenj
     var user = post.user();
     var tips = post.tips();
 
-    if (post.isHidden() || user.id() === flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default.a.session.user.id()) {
+    if (post.isHidden() || user.id() === flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default.a.session.user.id() || !user.web3Account()) {
       return;
     }
 
