@@ -53,8 +53,13 @@ class TipsWorkerCommand extends Command
                 }
 
                 $input = $data['input'];
+                $to = $data['to'];
 
-                if ($data["value"] !== "0x0" || strpos($input, "0xa9059cbb") !== 0) {
+                if (
+                    $data["value"] !== "0x0" ||
+                    strpos($input, "0xa9059cbb") !== 0 ||
+                    strtolower($to) !== strtolower($this->settings->get("tokenjenny-web3-tips.token_address"))
+                ) {
                     return;
                 }
 
