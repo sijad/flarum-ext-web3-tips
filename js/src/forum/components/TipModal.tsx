@@ -56,6 +56,7 @@ export default class TipModal extends Modal {
               className="Button Button--primary Button--block"
               type="submit"
               disabled={!this.amount()}
+              loading={this.loading}
             >
               {app.translator.trans('tokenjenny-web3-tips.forum.tip_post.submit_button')}
             </Button>
@@ -67,6 +68,9 @@ export default class TipModal extends Modal {
 
   onsubmit(e) {
     e.preventDefault();
+
+    this.loading = true;
+
     (async () => {
       const provider = (window as any).ethereum;
 
@@ -113,7 +117,6 @@ export default class TipModal extends Modal {
       // const estimatedGas = await rpcRequest('eth_estimateGas', params);
 
       const transaction = await rpcRequest('eth_sendTransaction', params);
-      console.log(transaction);
 
       const payload = await app.request({
         url: app.forum.attribute('apiUrl') + '/tips',
@@ -125,7 +128,13 @@ export default class TipModal extends Modal {
           },
         },
       });
-    })();
+
+      app.modal.close();
+    })().catch((e) => {
+      console.log(e);
+      this.loading = false;
+      m.redraw();
+    });
   }
 }
 

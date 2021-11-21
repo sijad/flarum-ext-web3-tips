@@ -6491,7 +6491,8 @@ var TipModal = /*#__PURE__*/function (_Modal) {
     }, m(flarum_common_components_Button__WEBPACK_IMPORTED_MODULE_4___default.a, {
       className: "Button Button--primary Button--block",
       type: "submit",
-      disabled: !this.amount()
+      disabled: !this.amount(),
+      loading: this.loading
     }, flarum_forum_app__WEBPACK_IMPORTED_MODULE_5___default.a.translator.trans('tokenjenny-web3-tips.forum.tip_post.submit_button')))));
   };
 
@@ -6499,6 +6500,7 @@ var TipModal = /*#__PURE__*/function (_Modal) {
     var _this2 = this;
 
     e.preventDefault();
+    this.loading = true;
 
     Object(_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default.a.mark(function _callee() {
       var provider, token, decimals, chainId, chainIdHex, accounts, from, userWallet, amountHex, post, address, input, params, transaction, payload;
@@ -6571,8 +6573,7 @@ var TipModal = /*#__PURE__*/function (_Modal) {
 
             case 27:
               transaction = _context.sent;
-              console.log(transaction);
-              _context.next = 31;
+              _context.next = 30;
               return flarum_forum_app__WEBPACK_IMPORTED_MODULE_5___default.a.request({
                 url: flarum_forum_app__WEBPACK_IMPORTED_MODULE_5___default.a.forum.attribute('apiUrl') + '/tips',
                 method: 'POST',
@@ -6584,8 +6585,9 @@ var TipModal = /*#__PURE__*/function (_Modal) {
                 }
               });
 
-            case 31:
+            case 30:
               payload = _context.sent;
+              flarum_forum_app__WEBPACK_IMPORTED_MODULE_5___default.a.modal.close();
 
             case 32:
             case "end":
@@ -6593,7 +6595,11 @@ var TipModal = /*#__PURE__*/function (_Modal) {
           }
         }
       }, _callee);
-    }))();
+    }))()["catch"](function (e) {
+      console.log(e);
+      _this2.loading = false;
+      m.redraw();
+    });
   };
 
   return TipModal;
