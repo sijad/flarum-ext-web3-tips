@@ -14,7 +14,7 @@
     },
     "require": {
         "flarum/core": "^1.1",
-        "tokenjenny/flarum-ext-web3": "*@dev",
+        "tokenjenny/flarum-ext-web3": "^0.0.2",
         "ext-gmp": "*",
         "guzzlehttp/guzzle": "6.* || 7.*"
     },
