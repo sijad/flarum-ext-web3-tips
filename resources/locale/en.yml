@@ -1,7 +1,7 @@
 tokenjenny-web3-tips:
   forum:
     post:
-      tip_link: "Tip ({count})"
+      tip_link: "Tip {count, plural, =0 {} other {(#)}}"
     tip_post:
       title: Tip Post
       amount: Amount
