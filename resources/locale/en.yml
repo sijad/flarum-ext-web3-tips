@@ -7,6 +7,10 @@ tokenjenny-web3-tips:
       amount: Amount
       submit_button: Tip
       connect_wallet: In order to tip you need to connect your wallet in settings.
+    settings:
+      notify_post_tipped_label: Someone tipped one of my posts
+    notifications:
+      post_tipped_text: "{username} tipped your post"
   admin:
     settings:
       token: Token Settings

@@ -6,12 +6,18 @@ use Carbon\Carbon;
 use TokenJenny\Web3Tips\Tip;
 use TokenJenny\Web3Tips\RpcClient;
 use TokenJenny\Web3Tips\Utils;
+use TokenJenny\Web3Tips\Event\PostWasTipped;
+use Flarum\Foundation\DispatchEventsTrait;
 use Flarum\User\User;
 use Flarum\Settings\SettingsRepositoryInterface;
+use Illuminate\Contracts\Events\Dispatcher;
+
 use Illuminate\Console\Command;
 
 class TipsWorkerCommand extends Command
 {
+    use DispatchEventsTrait;
+
     protected $signature = 'tips:process';
     protected $description = 'Process unconfirmed transactions.';
 
@@ -28,9 +34,13 @@ class TipsWorkerCommand extends Command
     /**
      * @param RpcClient $rpcClient
      */
-    public function __construct(RpcClient $rpcClient, SettingsRepositoryInterface $settings)
-    {
+    public function __construct(
+        RpcClient $rpcClient,
+        SettingsRepositoryInterface $settings,
+        Dispatcher $events,
+    ) {
         parent::__construct();
+        $this->events = $events;
         $this->rpcClient = $rpcClient;
         $this->settings = $settings;
     }
@@ -74,7 +84,8 @@ class TipsWorkerCommand extends Command
                     $query->where('provider', 'web3');
                     $query->where('identifier', $from);
                 })->first();
-                $toProvider = $tip->post->user->loginProviders()->where(['identifier' => 'web3', 'identifier' => $to ])->first();
+                $post = $tip->post;
+                $toProvider = $post->user->loginProviders()->where(['identifier' => 'web3', 'identifier' => $to ])->first();
 
                 if (!$user || !$toProvider) {
                     return;
@@ -88,7 +99,10 @@ class TipsWorkerCommand extends Command
                 $tip->is_confirmed = true;
                 $tip->save();
 
-                $tip->post->increment('tips');
+                $post->increment('tips');
+
+                $post->raise(new PostWasTipped($post, $user));
+                $this->dispatchEventsFor($post, $user);
             });
 
         $time = Carbon::now()->timestamp;

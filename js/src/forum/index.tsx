@@ -6,10 +6,12 @@ import CommentPost from 'flarum/forum/components/CommentPost';
 import TipModal from './components/TipModal';
 import Post from 'flarum/common/models/Post';
 import Model from 'flarum/common/Model';
-import icon from 'flarum/helpers/icon';
+import NotificationGrid from 'flarum/forum/components/NotificationGrid';
+import PostTippedNotification from './components/PostTippedNotification';
 
 app.initializers.add('tokenjenny-web3-tips', () => {
   (Post.prototype as any).tips = Model.attribute('tips');
+  (app.notificationComponents as any).postTipped = PostTippedNotification;
 
   extend(CommentPost.prototype, 'actionItems', function(this: CommentPost, items: ItemList) {
     const post = this.attrs.post;
@@ -34,7 +36,14 @@ app.initializers.add('tokenjenny-web3-tips', () => {
       },
       app.translator.trans('tokenjenny-web3-tips.forum.post.tip_link', { count: tips }))
      );
-
-    return items;
   });
+
+  extend(NotificationGrid.prototype, 'notificationTypes', function (this: NotificationGrid, items: ItemList) {
+    items.add('postTipped', {
+      name: 'postTipped',
+      icon: 'fas fa-gift',
+      label: app.translator.trans('tokenjenny-web3-tips.forum.settings.notify_post_tipped_label')
+    });
+  });
+
 });

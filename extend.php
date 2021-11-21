@@ -6,6 +6,11 @@ use Flarum\Extend;
 use Flarum\Api\Serializer\PostSerializer;
 use TokenJenny\Web3Tips\Api\Controllers\CreateTipController;
 use TokenJenny\Web3Tips\Commands\TipsWorkerCommand;
+use TokenJenny\Web3Tips\Event\PostWasTipped;
+use TokenJenny\Web3Tips\Listener\SendNotificationWhenPostIsTipped;
+use TokenJenny\Web3Tips\Notification\PostTippedBlueprint;
+use Flarum\Likes\Event\PostWasLiked;
+
 use Illuminate\Console\Scheduling\Event;
 
 return [
@@ -38,4 +43,10 @@ return [
                 ->onOneServer()
                 ->withoutOverlapping();
         }, []),
+
+    (new Extend\Notification())
+        ->type(PostTippedBlueprint::class, PostSerializer::class, ['alert']),
+
+    (new Extend\Event())
+        ->listen(PostWasTipped::class, SendNotificationWhenPostIsTipped::class)
 ];
