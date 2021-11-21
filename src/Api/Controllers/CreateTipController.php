@@ -2,6 +2,7 @@
 
 namespace TokenJenny\Web3Tips\Api\Controllers;
 
+use Carbon\Carbon;
 use Flarum\Http\RequestUtil;
 use Flarum\Post\CommentPost;
 use Flarum\Post\PostRepository;
@@ -49,6 +50,7 @@ class CreateTipController implements RequestHandlerInterface
         $tip->from = "";
         $tip->to = "";
         $tip->is_confirmed = false;
+        $tip->created_at = Carbon::now();
         $tip->save();
 
         return new EmptyResponse();

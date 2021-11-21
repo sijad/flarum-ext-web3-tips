@@ -2,6 +2,7 @@
 
 namespace TokenJenny\Web3Tips\Commands;
 
+use Carbon\Carbon;
 use TokenJenny\Web3Tips\Tip;
 use TokenJenny\Web3Tips\RpcClient;
 use TokenJenny\Web3Tips\Utils;
@@ -85,6 +86,9 @@ class TipsWorkerCommand extends Command
                 $tip->post->increment('tips');
             });
 
-        // TODO delete transactions more than 2 day passed
+        $time = Carbon::now()->timestamp;
+        Tip::where('created_at', '<=', date('Y-m-d H:i:s', $time - 24 * 60 * 60 * 2))
+            ->where('is_confirmed', false)
+            ->delete();
     }
 }
