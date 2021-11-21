@@ -6472,6 +6472,17 @@ var TipModal = /*#__PURE__*/function (_Modal) {
       }, flarum_forum_app__WEBPACK_IMPORTED_MODULE_5___default.a.translator.trans('tokenjenny-web3-tips.forum.tip_post.connect_wallet'));
     }
 
+    var user = this.attrs.post.user();
+    var wallet = user.web3Account();
+
+    if (!wallet) {
+      return m("div", {
+        className: "Modal-body"
+      }, flarum_forum_app__WEBPACK_IMPORTED_MODULE_5___default.a.translator.trans('tokenjenny-web3-tips.forum.tip_post.no_user_wallet', {
+        user: user
+      }));
+    }
+
     return m("div", {
       className: "Modal-body"
     }, m("div", {
@@ -6651,7 +6662,7 @@ flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default.a.initializers.add('tokenj
     var user = post.user();
     var tips = post.tips();
 
-    if (post.isHidden() || user.id() === flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default.a.session.user.id() || !user.web3Account()) {
+    if (post.isHidden() || user.id() === flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default.a.session.user.id()) {
       return;
     }
 

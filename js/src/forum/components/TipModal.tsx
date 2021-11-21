@@ -36,6 +36,17 @@ export default class TipModal extends Modal {
       );
     }
 
+    const user = this.attrs.post.user();
+    const wallet = user.web3Account();
+
+    if (!wallet) {
+      return (
+        <div className="Modal-body">
+          {app.translator.trans('tokenjenny-web3-tips.forum.tip_post.no_user_wallet', {user})}
+        </div>
+      );
+    }
+
     return (
       <div className="Modal-body">
         <div className="Form Form--centered">
