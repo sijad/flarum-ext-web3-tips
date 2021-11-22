@@ -37,7 +37,7 @@ class TipsWorkerCommand extends Command
     public function __construct(
         RpcClient $rpcClient,
         SettingsRepositoryInterface $settings,
-        Dispatcher $events,
+        Dispatcher $events
     ) {
         parent::__construct();
         $this->events = $events;
