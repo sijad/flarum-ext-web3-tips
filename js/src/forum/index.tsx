@@ -20,7 +20,7 @@ app.initializers.add('tokenjenny-web3-tips', () => {
 
     if (
       post.isHidden() ||
-      user.id() === app.session.user.id()
+      user.id() === app.session.user?.id()
     ) {
       return;
     }
